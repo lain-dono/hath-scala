@@ -47,7 +47,7 @@ import java.lang.Thread;
 
 public class HentaiAtHomeClient implements Runnable {
 	private InputQueryHandler iqh;
-	private Out out;
+	//private Out out;
 	private ShutdownHook shutdownHook;
 	private boolean shutdown, reportShutdown, fastShutdown;
 	private HTTPServer httpServer;
@@ -73,8 +73,8 @@ public class HentaiAtHomeClient implements Runnable {
 	// master thread for all regularly scheduled tasks
 	// note that this function also does most of the program initialization, so that the GUI thread doesn't get locked up doing this when the program is launched through the GUI extension.
 	public void run() {
-		out = new Out();
-		out.overrideDefaultOutput();
+		//out = [>new<] Out();
+		Out.overrideDefaultOutput();
 		Out.info("Hentai@Home " + Settings.CLIENT_VERSION + " starting up");
 		Out.info("");
 		Out.info("Copyright (c) 2008-2014, E-Hentai.org - all rights reserved.");
