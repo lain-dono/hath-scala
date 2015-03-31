@@ -89,7 +89,7 @@ public class ServerHandler {
 	private boolean simpleNotification(String act, String humanReadable) {
 		ServerResponse sr = ServerResponse.getServerResponse(act, this);
 
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			Out.debug(humanReadable + " notification successful.");
 			return true;
 		}
@@ -136,7 +136,7 @@ public class ServerHandler {
 	public boolean notifyStart() {
 		ServerResponse sr = ServerResponse.getServerResponse(ACT_CLIENT_START, this);
 
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			Out.info("Start notification successful. Note that there may be a short wait before the server registers this client on the network.");
 			return true;
 		}
@@ -226,7 +226,7 @@ public class ServerHandler {
 				URL uncacheURL = getServerConnectionURL(ACT_FILE_UNCACHE, sb.toString());
 				ServerResponse sr = ServerResponse.getServerResponse(uncacheURL, this);
 
-				if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+				if(sr.isOk()) {
 					Out.debug("Uncache notification successful.");
 				}
 				else {
@@ -249,7 +249,7 @@ public class ServerHandler {
 		URL registerURL = getServerConnectionURL(ACT_FILE_REGISTER, sb.toString());
 		ServerResponse sr = ServerResponse.getServerResponse(registerURL, this);
 
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			Out.debug("Register notification successful.");
 		}
 		else {
@@ -261,7 +261,7 @@ public class ServerHandler {
 		URL blacklistURL = getServerConnectionURL(ACT_GET_BLACKLIST, "" + deltatime);
 		ServerResponse sr = ServerResponse.getServerResponse(blacklistURL, this);
 
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			return sr.getResponseText();
 		} else {
 			return null;
@@ -287,13 +287,13 @@ public class ServerHandler {
 				Out.info("Reading Hentai@Home client settings from server...");
 				ServerResponse sr = ServerResponse.getServerResponse(ServerHandler.ACT_CLIENT_LOGIN, this);
 
-				if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+				if(sr.isOk()) {
 					loginValidated = true;
 					Out.info("Applying settings...");
 					Settings.parseAndUpdateSettings(sr.getResponseText());
 					Out.info("Finished applying settings");
 				}
-				else if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_NULL) {
+				else if(sr.isNull()) {
 					HentaiAtHomeClient.dieWithError("Failed to get a login response from server.");
 				}
 				else {
@@ -310,7 +310,7 @@ public class ServerHandler {
 		Out.info("Refreshing Hentai@Home client settings from server...");
 		ServerResponse sr = ServerResponse.getServerResponse(ServerHandler.ACT_CLIENT_SETTINGS, this);
 
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			Settings.parseAndUpdateSettings(sr.getResponseText());
 			Out.info("Finished applying settings");
 			//client.getCacheHandler().recheckFreeDiskSpace();  - we're not bothering to recheck the free space as the client doesn't accept live reductions of disk space
@@ -327,7 +327,7 @@ public class ServerHandler {
 		// get timestamp and minimum client build from server
 		ServerResponse sr = ServerResponse.getServerResponse(ServerHandler.ACT_SERVER_STAT, this);
 
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			Settings.parseAndUpdateSettings(sr.getResponseText());
 			return true;
 		}
@@ -346,7 +346,7 @@ public class ServerHandler {
 		URL tokenURL = getServerConnectionURL(ACT_FILE_TOKENS, tokens);
 		ServerResponse sr = ServerResponse.getServerResponse(tokenURL, this);
 
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			Hashtable<String,String> tokenTable = new Hashtable<String,String>();
 			String[] split = sr.getResponseText();
 

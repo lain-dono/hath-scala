@@ -43,10 +43,10 @@ public class CakeSphere implements Runnable {
 	
 	public void run() {
 		ServerResponse sr = ServerResponse.getServerResponse(ServerHandler.ACT_STILL_ALIVE, handler);
-		if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_OK) {
+		if(sr.isOk()) {
 			Out.debug("Successfully performed a stillAlive test for the server.");
 		}
-		else if(sr.getResponseStatus() == ServerResponse.RESPONSE_STATUS_NULL) {
+		else if(sr.isNull()) {
 			Out.warning("Failed to connect to the server for the stillAlive test. This is probably a temporary connection problem.");
 		}
 		else {
