@@ -25,10 +25,8 @@ package org.hath.base
 
 import java.io.File
 import java.net.InetAddress
-//import java.util.Hashtable
 
-import scala.collection.mutable.HashMap
-//import scala.collection.JavaConversions._
+//import scala.collection.mutable.HashMap
 
 object Settings {
   def NEWLINE = System.getProperty("line.separator")
@@ -91,7 +89,7 @@ object Settings {
 
   private var datadir:File = null
 
-  private var staticRanges = new HashMap[String, Int]
+  private var staticRanges:Set[String] = Set() //Map[String, Int] = Map()
 
   def setActiveClient(client: HentaiAtHomeClient) { activeClient = client }
   def setActiveGUI(gui: HathGUI) { activeGUI = gui }
@@ -211,13 +209,7 @@ object Settings {
         }
         case "rpc_server_ip" =>
           rpcChangeMonitor.synchronized {
-            val split = value.split("")
-            rpcServers = new Array[java.net.InetAddress](split.length)
-            var i = 0
-            for(s <- split) {
-              rpcServers(i) = java.net.InetAddress.getByName(s)
-              i+=1
-            }
+            rpcServers = value.split(";").map(java.net.InetAddress.getByName(_))
           }
         case "image_server" => imageServer = value
         case "name" => clientName = value
@@ -249,13 +241,7 @@ object Settings {
         case "skip_free_space_check" => skipFreeSpaceCheck = value == "true"
         case "max_connections" => overrideConns = value.toInt
         case "static_ranges" => {
-          staticRanges = new HashMap[String, Int]
-          val split = value.split("")
-          for(s <- split) {
-            if(s.length() == 4) {
-              staticRanges.put(s, 1)
-            }
-          }
+          staticRanges = value.split(";").filter(_.length() == 4).toSet //.map({(s:String) => (s, 1)})
         }
         case "silentstart" => // pass
         case _ =>
@@ -334,11 +320,11 @@ object Settings {
     }
   }
 
-  def isStaticRange(fileid: String) =
-    if(staticRanges == null) false
-    else staticRanges.contains(fileid.substring(0, 4))
+  def isStaticRange(fileid: String) = staticRanges.contains(fileid.substring(0, 4))
+    //if(staticRanges == null) false
+    //else staticRanges.contains(fileid.substring(0, 4))
 
-  def getStaticRangeCount():Int =
-    if(staticRanges == null) 0
-    else staticRanges.size
+  def getStaticRangeCount() = staticRanges.size
+    //if(staticRanges == null) 0
+    //else staticRanges.size
 }
