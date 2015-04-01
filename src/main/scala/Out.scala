@@ -35,6 +35,11 @@ import java.io.PrintStream
 import java.io.OutputStream
 import java.io.FileWriter
 
+
+trait OutListener extends java.util.EventListener {
+  def outputWritten(entry:String):Unit
+}
+
 object Out {
   val DEBUG = 1
   val INFO = 2
