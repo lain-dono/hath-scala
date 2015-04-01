@@ -95,7 +95,7 @@ public class HTTPSession implements Runnable {
 					rcvdBytes += read.length();
 
 					if(getheadPattern.matcher(read).matches()) {
-						request = read.substring(0, Math.min(Settings.MAX_REQUEST_LENGTH, read.length()));
+						request = read.substring(0, Math.min(Settings.MAX_REQUEST_LENGTH(), read.length()));
 					}
 					else if(read.isEmpty()) {
 						break;
@@ -126,7 +126,7 @@ public class HTTPSession implements Runnable {
 			header.append(getHTTPStatusHeader(statusCode));
 			header.append(hpc.getHeader());
 			header.append("Date: " + sdf.format(new Date()) + " GMT" + CRLF);
-			header.append("Server: Genetic Lifeform and Distributed Open Server " + Settings.CLIENT_VERSION + CRLF);
+			header.append("Server: Genetic Lifeform and Distributed Open Server " + Settings.CLIENT_VERSION() + CRLF);
 			header.append("Connection: close" + CRLF);
 			header.append("Content-Type: " + hpc.getContentType() + CRLF);
 
@@ -144,7 +144,7 @@ public class HTTPSession implements Runnable {
 			// subtract the total size of the header from the size of the first data packet sent. this avoids a problem where the third packet is undersize.
 			int pendingHeaderLength = headerBytes.length;
 			
-			if(pendingHeaderLength >= Settings.TCP_PACKET_SIZE_LOW) {
+			if(pendingHeaderLength >= Settings.TCP_PACKET_SIZE_LOW()) {
 				// flush header if we're already above the desirable max data packet size. (this shouldn't actually be possible, but better safe than trying to write a negative number of bytes.)
 				bs.flush();
 				pendingHeaderLength = 0;
@@ -181,7 +181,7 @@ public class HTTPSession implements Runnable {
 							while(writtenBytes < contentLength) {
 								// write a packet of data and flush. getBytesRange will block if new data is not yet available.
 
-								int writeLen = Math.min(Settings.TCP_PACKET_SIZE_HIGH - pendingHeaderLength, contentLength - writtenBytes);
+								int writeLen = Math.min(Settings.TCP_PACKET_SIZE_HIGH() - pendingHeaderLength, contentLength - writtenBytes);
 								bs.write(hpc.getBytesRange(writeLen), 0, writeLen);
 								bs.flush();
 

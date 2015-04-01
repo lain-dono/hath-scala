@@ -71,12 +71,12 @@ public class ServerHandler {
 
 		try {
 			if(act.equals(ACT_SERVER_STAT)) {
-				serverConnectionURL = new java.net.URL(Settings.CLIENT_API_URL + "clientbuild=" + Settings.CLIENT_BUILD + "&act=" + act);
+				serverConnectionURL = new java.net.URL(Settings.CLIENT_API_URL() + "clientbuild=" + Settings.CLIENT_BUILD() + "&act=" + act);
 			}
 			else {
 				int correctedTime = Settings.getServerTime();
 				String actkey = MiscTools.getSHAString("hentai@home-" + act + "-" + add + "-" + Settings.getClientID() + "-" + correctedTime + "-" + Settings.getClientKey());
-				serverConnectionURL = new java.net.URL(Settings.CLIENT_API_URL + "clientbuild=" + Settings.CLIENT_BUILD + "&act=" + act + "&add=" + add + "&cid=" + Settings.getClientID() + "&acttime=" + correctedTime + "&actkey=" + actkey);
+				serverConnectionURL = new java.net.URL(Settings.CLIENT_API_URL() + "clientbuild=" + Settings.CLIENT_BUILD() + "&act=" + act + "&add=" + add + "&cid=" + Settings.getClientID() + "&acttime=" + correctedTime + "&actkey=" + actkey);
 			}
 		} catch(java.net.MalformedURLException e) {
 			HentaiAtHomeClient.dieWithError(e);

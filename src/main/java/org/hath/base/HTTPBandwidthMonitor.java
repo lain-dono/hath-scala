@@ -54,10 +54,10 @@ public class HTTPBandwidthMonitor {
 	// accessors
 	public int getActualPacketSize() {
 		if(Settings.getThrottleBytesPerSec() == 0 || Settings.getThrottleBytesPerSec() >= 15000) {
-			return Settings.TCP_PACKET_SIZE_HIGH;
+			return Settings.TCP_PACKET_SIZE_HIGH();
 		}
 		else {
-			return Settings.TCP_PACKET_SIZE_LOW;
+			return Settings.TCP_PACKET_SIZE_LOW();
 		}
 	}	
 }

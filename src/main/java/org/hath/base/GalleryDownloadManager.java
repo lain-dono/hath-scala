@@ -148,7 +148,7 @@ public class GalleryDownloadManager implements Runnable {
 										}
 									}
 								} else {
-									information = information.concat(s).concat(Settings.NEWLINE);
+									information = information.concat(s).concat(Settings.NEWLINE());
 								}
 							}
 							

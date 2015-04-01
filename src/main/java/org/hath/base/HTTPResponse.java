@@ -201,7 +201,7 @@ public class HTTPResponse {
 
 						int correctedTime = Settings.getServerTime();
 
-						if((Math.abs(commandTime - correctedTime) < Settings.MAX_KEY_TIME_DRIFT) && MiscTools.getSHAString("hentai@home-servercmd-" + command + "-" + additional + "-" + Settings.getClientID() + "-" + commandTime + "-" + Settings.getClientKey()).equals(key)) {
+						if((Math.abs(commandTime - correctedTime) < Settings.MAX_KEY_TIME_DRIFT()) && MiscTools.getSHAString("hentai@home-servercmd-" + command + "-" + additional + "-" + Settings.getClientID() + "-" + commandTime + "-" + Settings.getClientKey()).equals(key)) {
 							responseStatusCode = 200;
 							servercmd = true;
 							hpc = processRemoteAPICommand(command, additional);
@@ -302,7 +302,7 @@ public class HTTPResponse {
 						
 						Out.debug("Sending threaded proxy test with testsize=" + testsize + " testtime=" + testtime + " testkey=" + testkey);
 						
-						if(Math.abs(testtime - Settings.getServerTime()) > Settings.MAX_KEY_TIME_DRIFT) {
+						if(Math.abs(testtime - Settings.getServerTime()) > Settings.MAX_KEY_TIME_DRIFT()) {
 							Out.warning(session + " Got a speedtest request with expired key");
 							responseStatusCode = 403;
 							return;

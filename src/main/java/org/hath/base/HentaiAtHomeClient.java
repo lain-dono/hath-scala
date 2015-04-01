@@ -75,7 +75,7 @@ public class HentaiAtHomeClient implements Runnable {
 	public void run() {
 		//out = [>new<] Out();
 		Out.overrideDefaultOutput();
-		Out.info("Hentai@Home " + Settings.CLIENT_VERSION + " starting up");
+		Out.info("Hentai@Home " + Settings.CLIENT_VERSION() + " starting up");
 		Out.info("");
 		Out.info("Copyright (c) 2008-2014, E-Hentai.org - all rights reserved.");
 		Out.info("This software comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to modify and redistribute it under the GPL v3 license.");
@@ -99,7 +99,7 @@ public class HentaiAtHomeClient implements Runnable {
 		clientAPI = new ClientAPI(this);
 
 		if(Settings.loadClientLoginFromFile()) {
-			Out.info("Loaded login settings from " + Settings.DATA_FILENAME_CLIENT_LOGIN);
+			Out.info("Loaded login settings from " + Settings.DATA_FILENAME_CLIENT_LOGIN());
 		}
 
 		if(!Settings.loginCredentialsAreSyntaxValid()) {

@@ -39,7 +39,7 @@ public class HHLogPane extends JPanel implements OutListener {
 		textArea.setEditable(false);
 		textArea.setLineWrap(false);
 		textArea.setWrapStyleWord(true);
-		addText("Hentai@Home GUI " + Settings.CLIENT_VERSION + " initializing...");
+		addText("Hentai@Home GUI " + Settings.CLIENT_VERSION() + " initializing...");
 		addText("The client will automatically start up momentarily...");
 		
 		JScrollPane taHolder = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,	JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
