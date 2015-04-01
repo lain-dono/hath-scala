@@ -43,14 +43,14 @@ class HVFile(val hash:String, val size:Int, val xres:Int, val yres:Int, val _typ
     case _     => Settings.CONTENT_TYPE_OCTET
   }
 
-  def localFileMatches(file: File) {
+  def localFileMatches(file: File): Boolean = {
     // note: we only check the sha-1 hash and filesize here, to save resources and avoid dealing with the crummy image handlers
     try {
       return file.length() == size && hash.startsWith(MiscTools.getSHAString(file))
     } catch {
       case e: java.io.IOException => Out.warning("Failed reading file " + file + " to determine hash.")
     }
-    return false
+    false
   }
 
   override def toString() = getFileid()
