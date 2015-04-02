@@ -107,7 +107,7 @@ class FileDownloader(source:URL, timeout:Int, maxDLTime:Int) extends Runnable {
     downloadLock.synchronized {
       if(started) return
       started = true
-      while(retries > 0) { breakable {
+      breakable { while(retries > 0) {
         retries -= 1
         var is:InputStream = null
         var bis:BufferedInputStream = null
