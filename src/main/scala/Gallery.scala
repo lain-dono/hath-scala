@@ -24,7 +24,7 @@ along with Hentai@Home.  If not, see <http://www.gnu.org/licenses/>.
 package org.hath.base
 
 import java.io.File
-import java.util.List
+//import java.util.List
 
 import scala.collection.JavaConversions._
 import scala.util.control.Breaks._
@@ -38,9 +38,11 @@ class Gallery(client:HentaiAtHomeClient, hhdlFile:File, todir:File, title:String
   def isNotPending() = state != Gallery.STATE_PENDING
 
   // takes and modifies list of the files that needs a token - these are borked together and requested by the main thread
-  def galleryPass(requestTokens:java.util.List[GalleryFile]) {
+  def galleryPass(_requestTokens:List[GalleryFile]):List[GalleryFile] = {
     var allFilesProcessed = true
     var errorsEncountered = false
+
+    var requestTokens = _requestTokens
 
     for(gf <- galleryFiles) { breakable{
       if(!client.isShuttingDown()) {
@@ -55,7 +57,7 @@ class Gallery(client:HentaiAtHomeClient, hhdlFile:File, todir:File, title:String
             allFilesProcessed = false
             if(gf.attemptDownload() == GalleryFile.FILE_INVALID_TOKEN) {
               if(! requestTokens.contains(gf) && requestTokens.size() < 20) {
-                requestTokens.add(gf)
+                requestTokens :+= (gf)
               }
             }
           }
@@ -81,6 +83,8 @@ class Gallery(client:HentaiAtHomeClient, hhdlFile:File, todir:File, title:String
 
       hhdlFile.delete()
     }
+
+    return requestTokens
   }
 }
 
