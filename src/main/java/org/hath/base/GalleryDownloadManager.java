@@ -187,7 +187,7 @@ public class GalleryDownloadManager implements Runnable {
 						
 							g.galleryPass(galleryFiles);
 							
-							if(g.getState() != Gallery.STATE_PENDING) {
+							if(g.isNotPending()) {
 								completed.add(g);
 							}
 						}
