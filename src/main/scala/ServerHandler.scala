@@ -34,6 +34,8 @@ import java.util.Hashtable
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+import scala.collection.mutable.MutableList
+
 object ServerHandler {
   private var loginValidated = false
 
@@ -184,7 +186,7 @@ class ServerHandler(client:HentaiAtHomeClient) {
   }
 
   // TODO
-  def notifyUncachedFiles(deletedFiles:java.util.List[HVFile]) {
+  def notifyUncachedFiles(deletedFiles:List[HVFile]) {
     // note: as we want to avoid POST, we do this as a long GET. to avoid exceeding certain URL length limitations, we uncache at most 50 files at a time
     var deleteCount = deletedFiles.size
 
@@ -197,7 +199,7 @@ class ServerHandler(client:HentaiAtHomeClient) {
         while(deleteCount > 0 && limiter <= 50) {
           val delim = if(limiter != 1)  ";" else ""
           deleteCount -= 1
-          sb.append(delim + deletedFiles.remove(deleteCount).getFileid())
+          sb.append(delim + deletedFiles/*.remove*/(deleteCount).getFileid())
           limiter+=1
         }
 
@@ -213,7 +215,7 @@ class ServerHandler(client:HentaiAtHomeClient) {
     }
   }
 
-  def notifyRegisterFiles(pendingRegister:java.util.List[HVFile]) {
+  def notifyRegisterFiles(pendingRegister:List[HVFile]) {
     var registerCount = pendingRegister.size
 
     Out.debug("Notifying server of " + registerCount + " registered files...")
@@ -222,7 +224,7 @@ class ServerHandler(client:HentaiAtHomeClient) {
     while(registerCount > 0) {
       registerCount -= 1
       val delim = if(sb.length() > 0) ";" else ""
-      sb.append(delim + pendingRegister.remove(registerCount).getFileid())
+      sb.append(delim + pendingRegister/*.remove*/(registerCount).getFileid())
     }
 
     val registerURL = ServerHandler.getServerConnectionURL(ServerHandler.ACT_FILE_REGISTER, sb.toString())
